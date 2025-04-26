@@ -24,7 +24,7 @@ header {
 
 nav {
     position: fixed;
-    top: 54px;
+    top: 62px;
     left: 0;
     width: 100%;
     background-color: #1a1c25;
@@ -109,7 +109,7 @@ nav {
 }
 
 .challenge-container {
-    margin-top: 75px;
+    margin-top: 95px;
     padding: 20px 0;
 }
 
