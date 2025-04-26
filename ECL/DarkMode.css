@@ -31,6 +31,7 @@ nav {
     padding: 10px 0;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     z-index: 1000;
 }
 
@@ -41,11 +42,12 @@ nav {
 
 .nav-button {
     display: inline-block;
-    padding: 5px 20px;
-    margin: 0 10px;
-    cursor: pointer;
+    padding: 5px 15px;
+    margin: 5px;
+    white-space: nowrap;
+    min-width: 80px;
+    text-align: center;
 }
-
 .nav-button:link {
     color: #c7bdb0;
     text-decoration: none;
@@ -136,4 +138,16 @@ nav {
     height: 100%;
     border: none;
     border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+    nav {
+        padding: 5px, 0;
+    }
+
+    .nav-button {
+        padding: 5px 10px;
+        margin: 3px;
+        min-width: .9em;
+    }
 }
