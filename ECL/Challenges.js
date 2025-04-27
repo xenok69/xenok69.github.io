@@ -114,7 +114,7 @@ function generateChallenges(data) {
                 <div class="description">Creator: ${challengeData.Creator}</div>
                 <div class="description">Verifier: ${challengeData.Verifier}</div>
                 <div class="description">ID: ${challengeData.ID}</div>
-                <div class="description">Points: ${challengeData.Punkte}</div>
+                <div class="description">Points: ${Math.floor(challengeData.Punkte)}</div>
                 <div class="challenge-tags">
                     ${tags[0] ? `<span class="tag difficulty">${tags[0]}</span>` : ''}
                     ${tags[1] ? `<span class="tag gameplay">${tags[1]}</span>` : ''}
