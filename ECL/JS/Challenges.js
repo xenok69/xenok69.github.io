@@ -4,7 +4,7 @@ async function loadExcelData() {
         console.log("Starte Laden der Excel-Datei...");
         
         // XLSB-Datei aus dem lokalen Verzeichnis laden
-        const response = await fetch('./MainData.xlsb');
+        const response = await fetch('./MISC/MainData.xlsb');
         const arrayBuffer = await response.arrayBuffer();
         
         console.log("Datei geladen, verarbeite XLSB...");
