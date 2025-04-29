@@ -23,22 +23,28 @@ async function fetchGDUserData(username) {
  
  // GD Icon URLs basierend auf Spieler-Daten generieren
  function getGDIconUrls(userData) {
-     if (!userData) return null;
-     
-     // URL mit allen Parametern für die korrekten Farben
-     const cubeUrl = `https://gdbrowser.com/icon/icon?icon=${userData.icon}&form=cube&col1=${userData.col1}&col2=${userData.col2}${userData.glow ? "&glow=1" : ""}`;
-     console.log(`Generiere Icon-URL für ${userData.username}:`, cubeUrl);
-     
-     return {
-         cube: cubeUrl,
-         ship: `https://gdbrowser.com/icon/icon?icon=${userData.ship}&form=ship&col1=${userData.col1}&col2=${userData.col2}${userData.glow ? "&glow=1" : ""}`,
-         ball: `https://gdbrowser.com/icon/icon?icon=${userData.ball}&form=ball&col1=${userData.col1}&col2=${userData.col2}${userData.glow ? "&glow=1" : ""}`,
-         ufo: `https://gdbrowser.com/icon/icon?icon=${userData.ufo}&form=ufo&col1=${userData.col1}&col2=${userData.col2}${userData.glow ? "&glow=1" : ""}`,
-         wave: `https://gdbrowser.com/icon/icon?icon=${userData.wave}&form=wave&col1=${userData.col1}&col2=${userData.col2}${userData.glow ? "&glow=1" : ""}`,
-         robot: `https://gdbrowser.com/icon/icon?icon=${userData.robot}&form=robot&col1=${userData.col1}&col2=${userData.col2}${userData.glow ? "&glow=1" : ""}`,
-         spider: `https://gdbrowser.com/icon/icon?icon=${userData.spider}&form=spider&col1=${userData.col1}&col2=${userData.col2}${userData.glow ? "&glow=1" : ""}`
-     };
- }
+    if (!userData) return null;
+    
+    // RGB-Werte extrahieren
+    const primaryColor = userData.col1RGB ? 
+        `${userData.col1RGB.r},${userData.col1RGB.g},${userData.col1RGB.b}` : 
+        userData.col1 || "3";
+        
+    const secondaryColor = userData.col2RGB ? 
+        `${userData.col2RGB.r},${userData.col2RGB.g},${userData.col2RGB.b}` : 
+        userData.col2 || "2";
+    
+    // URL mit RGB-Werten erstellen
+    const cubeUrl = `https://gdbrowser.com/icon/icon?icon=${userData.icon}&form=cube&col1=${primaryColor}&col2=${secondaryColor}${userData.glow ? "&glow=1" : ""}`;
+    
+    // Für Debugging
+    console.log(`Icon-URL mit RGB für ${userData.username}:`, cubeUrl);
+    
+    return {
+        cube: cubeUrl,
+        // Andere Icons entsprechend anpassen
+    };
+}
  
  // Hauptfunktion zum Verarbeiten der Daten und Generieren des Leaderboards
  function processLeaderboard(data) {
@@ -240,6 +246,9 @@ async function fetchGDUserData(username) {
                      img.style.height = '100%';
                      img.style.objectFit = 'contain'; // Bild vollständig anzeigen ohne Beschneidung
                      img.style.backgroundColor = 'transparent'; // Hintergrund transparent
+
+                     img.style.position = 'relative';
+                     img.style.left = '13px';
                      
                      // Vorhandene Inhalte entfernen und neues Bild einfügen
                      iconContainer.innerHTML = '';
