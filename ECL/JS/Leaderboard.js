@@ -186,16 +186,9 @@ async function loadXLSBFile() {
 // Funktion zum Laden der Testdaten (für Debugging-Zwecke)
 function loadTestData() {
    return [
-       ["PLAYER", "MentosTeeDG", "SFApfel", "yJulieen"],
-       ["POINTS", "174", "100", "131"],
-       ["Fenchelhonig", "", "x", ""],
-       ["Fledermaus", "x", "", ""],
-       ["Fotosynthese", "", "", "x"],
-       ["so CRACKED", "", "", ""],
-       ["Silent Steissbein", "x", "", "x"],
-       ["almost alright", "x", "", ""],
-       ["Apfel Never Clear", "x", "", "x"],
-       ["celeste", "x", "", "x"]
+       ["PLAYER", "NULL"],
+       ["POINTS", "0"],
+       ["NULL", ""]
    ];
 }
 
