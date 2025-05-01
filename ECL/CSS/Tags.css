@@ -1,34 +1,41 @@
 .challenge-tags {
-    margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    margin-top: 12px;
 }
 
 .tag {
-    background-color: #252830;
-    border: 1px solid #383c4a;
-    border-radius: 12px;
-    padding: 3px 10px;
+    background-color: var(--bg-transparent-light);
+    border: var(--stroke-width) solid var(--stroke-color);
+    border-radius: var(--border-radius);
+    padding: 4px 10px;
     font-size: 12px;
+    font-weight: bold;
     display: inline-block;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .tag:hover {
-    background-color: #2a2e3a;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Tag-Farben für verschiedene Kategorien */
-.difficulty {
-    border-color: #d85e5e;
+.tag.difficulty {
+    border-color: var(--accent-red);
+    color: var(--accent-red);
 }
 
-.style {
-    border-color: #5ea8d8;
+.tag.style {
+    border-color: #3db4f2;
+    color: #3db4f2;
 }
 
-.gameplay {
-    border-color: #5ed89b;
+.tag.gameplay {
+    border-color: #4cd964;
+    color: #4cd964;
 }

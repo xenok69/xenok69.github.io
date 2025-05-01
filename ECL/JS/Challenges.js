@@ -46,7 +46,7 @@ function useFixedData() {
     const fixedData = [
         { 
             Placing: 0, 
-            Name: "UNBEKANNT", 
+            Challenge: "UNBEKANNT", 
             Creator: "UNBEKANNT", 
             Verifier: "UNBEKANNT", 
             ID: "UNBEKANNT", 
@@ -59,7 +59,7 @@ function useFixedData() {
     generateChallenges(fixedData);
 }
 
-// Funktion zum Generieren der HTML-Struktur für jede Challenge
+// Funktion zum Generieren der HTML-Struktur für jede Challenge im neuen Roblox-Stil
 function generateChallenges(data) {
     const challengeListElement = document.querySelector('.challenge-list');
     
@@ -100,26 +100,58 @@ function generateChallenges(data) {
         // Tags verarbeiten, wenn vorhanden
         const tags = challengeData.Tags ? challengeData.Tags.split(';') : [];
         
+        // Prüfen, ob ein YouTube-Link vorhanden ist und daraus Thumbnail und Embed generieren
+        let videoEmbed = '';
+        let videoInfo = getYoutubeInfo(challengeData.Video);
+        
+        if (videoInfo) {
+            // Verwende ein qualitativ hochwertiges Thumbnail mit maxresdefault oder hqdefault
+            videoEmbed = `
+                <div class="youtube-container" data-video-id="${videoInfo.videoId}">
+                    <div class="thumbnail-container">
+                        <img src="https://i.ytimg.com/vi/${videoInfo.videoId}/maxresdefault.jpg" 
+                             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${videoInfo.videoId}/hqdefault.jpg';" 
+                             alt="${challengeData.Name}" class="youtube-thumbnail">
+                        <div class="play-button" onclick="playVideo('${videoInfo.videoId}', this)"></div>
+                    </div>
+                </div>`;
+        } else {
+            // Fallback ohne Video
+            videoEmbed = `
+                <div class="thumbnail-container">
+                    <img src="/ECL/ICONS/NoVideo.png" alt="${challengeData.Name}" class="youtube-thumbnail">
+                    <div class="play-button"></div>
+                </div>`;
+        }
+        
         // Challenge-Div erstellen
         const challengeDiv = document.createElement('div');
         challengeDiv.className = 'challenge';
         
-        // HTML für die Challenge generieren
+        // HTML für die Challenge im neuen Roblox-Stil generieren
         challengeDiv.innerHTML = `
             <div class="youtube-embed">
-                ${challengeData.Video ? `<iframe src="${challengeData.Video}" frameborder="0" allowfullscreen></iframe>` : ''}
+                ${videoEmbed}
             </div>
             <div class="challenge-info">
                 <div class="challenge-title">#${challengeData.Placing} - ${challengeData.Name}</div>
-                <div class="description">Creator: ${challengeData.Creator}</div>
-                <div class="description">Verifier: ${challengeData.Verifier}</div>
-                <div class="description">ID: ${challengeData.ID}</div>
-                <div class="description">Points: ${Math.round(challengeData.Punkte)}</div>
+                <div class="info-grid">
+                    <div class="info-label">Creator:</div>
+                    <div class="info-value">${challengeData.Creator}</div>
+                    
+                    <div class="info-label">Verifier:</div>
+                    <div class="info-value">${challengeData.Verifier}</div>
+                    
+                    <div class="info-label">ID:</div>
+                    <div class="info-value">${challengeData.ID}</div>
+                    
+                    <div class="info-label">Points:</div>
+                    <div class="points-value">
+                        <span class="points-badge">${Math.round(challengeData.Punkte)}</span>
+                    </div>
+                </div>
                 <div class="challenge-tags">
-                    ${tags[0] ? `<span class="tag difficulty">${tags[0]}</span>` : ''}
-                    ${tags[1] ? `<span class="tag gameplay">${tags[1]}</span>` : ''}
-                    ${tags[2] ? `<span class="tag style">${tags[2]}</span>` : ''}
-                    ${tags.slice(3).map(tag => tag ? `<span class="tag">${tag}</span>` : '').join('')}
+                    ${getTagHtml(tags)}
                 </div>
             </div>
         `;
@@ -129,6 +161,96 @@ function generateChallenges(data) {
     });
     
     console.log("Challenges erstellt");
+    
+    // Script zur Steuerung der YouTube-Einbettung hinzufügen
+    addYoutubeControlScript();
+}
+
+// Funktion zum Hinzufügen des YouTube-Steuerungsskripts
+function addYoutubeControlScript() {
+    // Prüfen, ob das Script bereits existiert
+    if (document.getElementById('youtube-control-script')) {
+        return;
+    }
+    
+    const script = document.createElement('script');
+    script.id = 'youtube-control-script';
+    script.textContent = `
+        function playVideo(videoId, playButtonElement) {
+            // Eltern-Container finden
+            const container = playButtonElement.closest('.youtube-container');
+            if (!container) return;
+            
+            // Thumbnail-Container entfernen
+            const thumbnailContainer = container.querySelector('.thumbnail-container');
+            if (thumbnailContainer) {
+                thumbnailContainer.remove();
+            }
+            
+            // YouTube iFrame einfügen
+            const iframe = document.createElement('iframe');
+            iframe.src = \`https://www.youtube.com/embed/\${videoId}?autoplay=1&rel=0\`;
+            iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+            iframe.allowFullscreen = true;
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.border = 'none';
+            
+            container.appendChild(iframe);
+        }
+    `;
+    
+    document.body.appendChild(script);
+}
+
+// Hilfsfunktion zum Extrahieren der YouTube-Video-Informationen
+function getYoutubeInfo(url) {
+    if (!url) return null;
+    
+    // Für Standard-YouTube-Links
+    let match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+    
+    if (match && match[1]) {
+        return {
+            videoId: match[1],
+            type: 'youtube'
+        };
+    }
+    
+    return null;
+}
+
+// Hilfsfunktion zum Generieren des HTML-Codes für Tags mit den richtigen CSS-Klassen
+function getTagHtml(tags) {
+    if (!tags || tags.length === 0) {
+        return '';
+    }
+    
+    let tagHtml = '';
+    
+    // Ersten Tag als Schwierigkeitsgrad behandeln
+    if (tags[0]) {
+        tagHtml += `<span class="tag difficulty">${tags[0]}</span>`;
+    }
+    
+    // Zweiten Tag als Spielstil behandeln
+    if (tags[1]) {
+        tagHtml += `<span class="tag style">${tags[1]}</span>`;
+    }
+    
+    // Dritten Tag als Gameplay behandeln
+    if (tags[2]) {
+        tagHtml += `<span class="tag gameplay">${tags[2]}</span>`;
+    }
+    
+    // Alle weiteren Tags als normale Tags
+    for (let i = 3; i < tags.length; i++) {
+        if (tags[i] && tags[i].trim() !== '') {
+            tagHtml += `<span class="tag">${tags[i]}</span>`;
+        }
+    }
+    
+    return tagHtml;
 }
 
 // Funktion beim Laden der Seite ausführen

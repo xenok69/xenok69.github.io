@@ -6,25 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Eclipse Challenge List</title>
-    <link rel="icon" type="image/png" href="ICONS/Logo.png">
+    <link rel="icon" type="image/png" href="/ECL/ICONS/Logo.png">
 
     <link rel="stylesheet" href="CSS/DarkMode.css">
     <link rel="stylesheet" href="CSS/Tags.css">
 </head>
 <body>
     <header>
-        <div class="list-title">🌒 Eclipse Challenge List</div>
+        <div class="header-container roblox-ui">
+            <div class="list-title">
+                <span style="color: #6c4bda; margin-right: 8px;">🌒</span> eclipse challenge list
+            </div>
+        </div>
     </header>
     
     <nav>
-        <a class="nav-button" href="https://xenok69.github.io/ECL/MainList.html">List</a>
-        <a class="nav-button" href="https://xenok69.github.io/ECL/MainLeaderboard.html">Leaderboard</a>
-        <a class="nav-button" href="https://discord.gg/cDP7QccxNV">Server</a>
-        <!-- a class="nav-button">Helpers</a -->
+        <div class="nav-container">
+            <a class="nav-button" href="https://xenok69.github.io/ECL/MainList.html">List</a>
+            <a class="nav-button active" href="https://xenok69.github.io/ECL/MainLeaderboard.html">Leaderboard</a>
+            <a class="nav-button" href="https://discord.gg/cDP7QccxNV">Server</a>
+        </div>
     </nav>
-
+    
     <div class="challenge-container">
-        <!-- CHALLENGES -->
+        <!-- LEADERBOARD  -->
         <div class="challenge-list">
             <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
             <script src="JS/Leaderboard.js"></script>

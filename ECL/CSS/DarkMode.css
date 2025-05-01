@@ -1,20 +1,35 @@
+:root {
+    --stroke-color: rgba(255, 255, 255, 0.5);
+    --bg-transparent: rgba(10, 10, 15, 0.75);
+    --bg-transparent-light: rgba(20, 20, 30, 0.65);
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --accent-blue: rgba(59, 153, 252, 0.7);
+    --accent-red: rgba(244, 67, 54, 0.7);
+    --accent-green: rgba(76, 175, 80, 0.7);
+    --accent-gold: rgba(255, 193, 7, 0.8);
+    --stroke-width: 1.5px;
+    --blur-amount: 10px;
+    --border-radius: 4px;
+    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Cascadia Mono', monospace;
+    font-family: var(--font-primary);
 }
 
 body {
-    background-color: #181818;
-    color: #f1e5d5;
-
+    background-color: #0a0a0a;
+    color: var(--text-primary);
     background-image: url('../IMAGES/Background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-
     position: relative;
 }
 
@@ -29,68 +44,186 @@ body::before {
     z-index: -1;
 }
 
+/* Roblox-style stroke for all UI elements */
+.roblox-ui {
+    background-color: var(--bg-transparent);
+    border: var(--stroke-width) solid var(--stroke-color);
+    backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+}
+
 header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #010101;
-    padding: 15px;
-    display: flex;
-    justify-content: center;
     z-index: 1000;
+    padding: 15px 0;
+    background-color: rgba(10, 10, 10, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+.header-container {
+    width: 80%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 10px 20px;
 }
 
 nav {
     position: fixed;
-    top: 62px;
+    top: 80px;
     left: 0;
     width: 100%;
-    background-color: #101010;
+    z-index: 1000;
     padding: 10px 0;
+    background-color: rgba(10, 10, 10, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-container {
+    width: 80%;
+    max-width: 900px;
+    margin: 0 auto;
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    z-index: 1000;
+    gap: 15px;
 }
 
 .list-title {
     font-size: 24px;
     text-align: center;
+    letter-spacing: 2px;
+    text-transform: lowercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.list-title img {
+    margin-right: 10px;
+    vertical-align: middle;
 }
 
 .nav-button {
     display: inline-block;
-    padding: 5px 15px;
-    margin: 5px;
-    white-space: nowrap;
-    min-width: 80px;
-    text-align: center;
-}
-.nav-button:link {
-    color: #c7bdb0;
+    padding: 8px 20px;
+    margin: 0;
+    background-color: var(--bg-transparent-light);
+    border: var(--stroke-width) solid var(--stroke-color);
+    border-radius: var(--border-radius);
+    color: var(--text-primary);
     text-decoration: none;
-}
-
-.nav-button:visited {
-    color: #f1e5d5;
+    text-align: center;
+    transition: all 0.2s ease;
+    min-width: 100px;
+    font-weight: bold;
+    backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
 }
 
 .nav-button:hover {
-    color: #eeeab9;
-    text-decoration: underline;
+    background-color: rgba(59, 153, 252, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+    color: var(--text-primary);
 }
 
-.thumbnail {
+.nav-button:visited {
+    color: var(--text-primary);
+}
+
+.nav-button.active {
+    background-color: rgba(59, 153, 252, 0.5);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+.challenge-container {
+    padding: 150px 0 40px; /* Erhöhter Abstand nach oben */
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.challenge-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 900px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Zusätzlicher Abstand für die erste Challenge */
+.challenge-list > .challenge:first-child {
+    margin-top: 15px;
+}
+
+.challenge {
+    display: flex;
+    background-color: var(--bg-transparent);
+    border: var(--stroke-width) solid var(--stroke-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.challenge:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    border-color: rgba(100, 180, 255, 0.8);
+}
+
+/* Verbesserte YouTube-Einbettung mit hochwertigen Thumbnails */
+.youtube-embed {
+    width: 320px;
+    height: 180px;
+    flex-shrink: 0;
+    padding: 0;
     position: relative;
-    width: 200px;
-    height: 130px;
+    border-right: var(--stroke-width) solid var(--stroke-color);
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: hidden; /* Verhindert, dass Bilder über die Grenzen hinausragen */
 }
 
-.thumbnail img {
+.youtube-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.thumbnail-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+}
+
+.youtube-thumbnail {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+}
+
+/* Dezenter Zoom-Effekt beim Hover */
+.thumbnail-container:hover .youtube-thumbnail {
+    transform: scale(1.05);
 }
 
 .play-button {
@@ -98,91 +231,183 @@ nav {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    width: 30px;
-    height: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 0, 0, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 2;
+    transition: all 0.2s ease;
+    cursor: pointer;
 }
 
-.challenge-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    max-width: 45%;
-    margin: 20px auto;
-    padding: 0 20px;
+.play-button::after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 12px 0 12px 20px;
+    border-color: transparent transparent transparent white;
+    margin-left: 5px;
 }
 
-.challenge {
-    display: flex;
-    background-color: rgba(0, 0, 0, .75);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    align-items: center;
-}
-
-.challenge-container {
-    margin-top: 95px;
-    padding: 20px 0;
-}
-
-.challenge-info {
-    padding: 15px;
-}
-
-.challenge-title {
-    font-size: 20px;
-    margin-bottom: 5px;
-}
-
-.description {
-    opacity: 0.7;
-}
-
-.youtube-embed {
-    width: 300px;
-    height: 175px;
-    flex-shrink: 0;
-    padding: 8px;
+.thumbnail-container:hover .play-button {
+    background-color: rgba(255, 0, 0, 1);
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
 }
 
 .youtube-embed iframe {
     width: 100%;
     height: 100%;
     border: none;
-    border-radius: 8px;
+    display: block;
+}
+
+.challenge-info {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.challenge-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 15px;
+    margin-bottom: 12px;
+    padding: 10px;
+    background-color: var(--bg-transparent-light);
+    border: var(--stroke-width) solid var(--stroke-color);
+    border-radius: var(--border-radius);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.info-label {
+    color: var(--text-primary);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.info-value {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.points-value {
+    display: flex;
+    align-items: center;
+}
+
+.points-badge {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--bg-transparent-light);
+    border: var(--stroke-width) solid var(--accent-gold);
+    border-radius: var(--border-radius);
+    padding: 2px 8px;
+    font-weight: bold;
+    font-size: 13px;
+    color: var(--accent-gold);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.points-badge::before {
+    content: "⭐";
+    margin-right: 5px;
+    font-size: 13px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 153, 252, 0.4);
+}
+
+/* Für den GD-Icon-Container (Leaderboard) */
+.gd-icon-container {
+    width: 80px;
+    height: 80px;
+    background-color: var(--bg-transparent-light);
+    border: var(--stroke-width) solid var(--stroke-color);
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    margin-right: 15px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 900px) {
+    .challenge-list, .header-container, .nav-container {
+        width: 95%;
+    }
+    
+    .challenge {
+        flex-direction: column;
+    }
+
+    .youtube-embed {
+        width: 100%;
+        height: 220px;
+        border-right: none;
+        border-bottom: var(--stroke-width) solid var(--stroke-color);
+    }
 }
 
 @media screen and (max-width: 600px) {
     nav {
-        padding: 5px, 0;
+        padding: 5px 0;
+    }
+
+    .challenge-container {
+        padding-top: 140px; /* Anpassung für kleinere Bildschirme */
     }
 
     .nav-button {
-        padding: 5px 10px;
-        margin: 3px;
-        min-width: .9em;
-    }
-}
-
-@media screen and (max-width: 1250px) {
-    .challenge-list {
-        max-width: 90%;
-    }
-
-    .thumbnail {
-        width: 100%;
-        height: auto;
+        padding: 6px 12px;
+        margin: 4px;
+        min-width: 80px;
+        font-size: 14px;
     }
 
     .youtube-embed {
-        width: 45%;
-        height: auto;
+        height: 200px;
+    }
+
+    .challenge-title {
+        font-size: 18px;
+    }
+
+    .info-value {
+        font-size: 13px;
     }
 }
