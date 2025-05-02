@@ -119,7 +119,7 @@ function generateChallenges(data) {
             // Fallback ohne Video
             videoEmbed = `
                 <div class="thumbnail-container">
-                    <img src="https://github.com/xenok69/xenok69.github.io/blob/main/ECL/Images/NoVideo.png?raw=true" alt="${challengeData.Name}" class="youtube-thumbnail">
+                    <img src="https://github.com/xenok69/xenok69.github.io/blob/main/ECL/ICONS/NoVideo.png?raw=true" alt="${challengeData.Name}" class="youtube-thumbnail">
                     <div class="play-button"></div>
                 </div>`;
         }
