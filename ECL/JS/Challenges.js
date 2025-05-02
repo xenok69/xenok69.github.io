@@ -127,6 +127,19 @@ function generateChallenges(data) {
         // Challenge-Div erstellen
         const challengeDiv = document.createElement('div');
         challengeDiv.className = 'challenge';
+        challengeDiv.setAttribute('data-id', challengeData.ID);
+        challengeDiv.style.cursor = 'pointer'; // Zeigt Cursor als Hand an
+        
+        // Klickevent zum Öffnen der Details-Seite
+        challengeDiv.addEventListener('click', function(event) {
+            // Falls auf den Play-Button geklickt wurde, nicht zur Details-Seite navigieren
+            if (event.target.closest('.play-button')) {
+                return;
+            }
+            
+            // Zur Details-Seite mit der ID als Parameter navigieren
+            window.location.href = `./MainDetails.html?id=${challengeData.ID}`;
+        });
         
         // HTML für die Challenge im neuen Roblox-Stil generieren
         challengeDiv.innerHTML = `
@@ -180,6 +193,9 @@ function addYoutubeControlScript() {
             // Eltern-Container finden
             const container = playButtonElement.closest('.youtube-container');
             if (!container) return;
+            
+            // Event stoppen, damit die Navigation nicht ausgelöst wird
+            event.stopPropagation();
             
             // Thumbnail-Container entfernen
             const thumbnailContainer = container.querySelector('.thumbnail-container');

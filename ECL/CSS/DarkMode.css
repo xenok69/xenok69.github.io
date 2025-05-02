@@ -25,7 +25,7 @@
 body {
     background-color: #0a0a0a;
     color: var(--text-primary);
-    background-image: url('https://github.com/xenok69/xenok69.github.io/blob/main/ECL/Images/Background.jpg?raw=true');
+    background-image: url('../IMAGES/Background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -150,6 +150,7 @@ nav {
     margin: 0;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .challenge-list {
@@ -410,4 +411,273 @@ nav {
     .info-value {
         font-size: 13px;
     }
+}
+
+/* ======================================================================= */
+/* Challenge Detail Styles - Hinzugefügt für die Challenge-Detailseite     */
+/* ======================================================================= */
+
+/* Challenge Detail Container */
+.challenge-detail {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* Challenge Header mit Navigation */
+.challenge-detail-container {
+    padding: 20px;
+}
+
+.challenge-title-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.nav-arrow {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 32px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.nav-arrow:hover {
+    color: var(--text-primary);
+}
+
+.challenge-title-main {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.challenge-creator {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+/* Video-Container mit Play-Button */
+.video-container {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto 25px auto;
+    position: relative;
+    background-color: #000;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.challenge-video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: block;
+}
+
+.play-button-large {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background-color: rgba(255, 0, 0, 0.7);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.play-button-large::after {
+    content: "";
+    border-style: solid;
+    border-width: 15px 0 15px 25px;
+    border-color: transparent transparent transparent white;
+    margin-left: 5px;
+}
+
+.play-button-large:hover {
+    background-color: rgba(255, 0, 0, 1);
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+}
+
+/* Challenge Informationen */
+.challenge-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 0 auto;
+    max-width: 640px;
+}
+
+.info-block {
+    text-align: center;
+}
+
+.info-block .info-label {
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.info-block .info-value {
+    font-size: 20px;
+}
+
+.points-badge-large {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--bg-transparent-light);
+    border: var(--stroke-width) solid var(--accent-gold);
+    border-radius: var(--border-radius);
+    padding: 4px 12px;
+    font-weight: bold;
+    font-size: 18px;
+    color: var(--accent-gold);
+}
+
+.points-badge-large::before {
+    content: "⭐";
+    margin-right: 5px;
+    font-size: 18px;
+}
+
+/* Records Section */
+.records-section {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.records-container {
+    background-color: var(--bg-transparent);
+    border: var(--stroke-width) solid var(--stroke-color);
+    border-radius: var(--border-radius);
+    backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
+    padding: 20px;
+    box-shadow: var(--box-shadow);
+}
+
+.records-title {
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.records-subtitle {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.records-count {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.records-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 12px;
+    border-radius: var(--border-radius);
+    margin-bottom: 10px;
+}
+
+.records-header-cell {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.record-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.record-row:last-child {
+    border-bottom: none;
+}
+
+.record-cell {
+    text-align: center;
+    padding: 5px 0;
+}
+
+.video-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.video-link:hover {
+    color: var(--accent-blue);
+}
+
+.video-link svg {
+    width: 16px;
+    height: 16px;
+    margin-left: 5px;
+}
+
+/* Anpassungen für mobile Geräte (für Challenge-Detail-Seite) */
+@media screen and (max-width: 768px) {
+    .challenge-info-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .challenge-title-main {
+        font-size: 24px;
+    }
+    
+    .nav-arrow {
+        font-size: 24px;
+    }
+}
+
+/* ======================================================================= */
+/* Vertikales Layout für Challenge Detail und Records                      */
+/* ======================================================================= */
+
+.vertical-layout {
+    flex-direction: column;
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.vertical-layout .challenge-detail,
+.vertical-layout .records-section {
+    width: 100%;
+    max-width: 900px;
+}
+
+.vertical-layout .challenge-detail {
+    margin-bottom: 20px;
+}
+
+.vertical-layout .records-section {
+    margin-top: 0;
+    margin-bottom: 40px;
+}
+
+/* Styling für gleiches Aussehen wie im Screenshot */
+.challenge-detail-container,
+.records-container {
+    width: 100%;
+    margin-bottom: 0;
 }
