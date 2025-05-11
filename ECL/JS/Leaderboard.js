@@ -42,6 +42,16 @@ function getGDIconUrls(userData) {
    };
 }
 
+// Funktion zum Prüfen, ob ein Link ein gültiger YouTube-Link ist
+function isValidYoutubeUrl(url) {
+    if (!url) return false;
+    
+    // Regex für YouTube-URLs: youtube.com, youtu.be mit verschiedenen Formaten
+    const youtubePattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|v\/|embed\/|shorts\/)?([a-zA-Z0-9_-]{11}|[a-zA-Z0-9_-]+)/;
+    
+    return youtubePattern.test(url);
+}
+
 // Hauptfunktion zum Verarbeiten der Daten und Generieren des Leaderboards
 function processLeaderboard(data) {
    // Spielerinformationen extrahieren
@@ -56,7 +66,8 @@ function processLeaderboard(data) {
            players.push({
                name: playerName,
                points: playerPoints,
-               completed: 0
+               completed: 0,
+               challenges: [] // Neue Eigenschaft für abgeschlossene Challenges
            });
        }
    }
@@ -64,7 +75,7 @@ function processLeaderboard(data) {
    // Wenn keine gültigen Spieler gefunden wurden, verwende Testdaten
    if (players.length === 0) {
        return generateLeaderboardHTML([
-           { name: "NULL", points: 0, completed: 0 }
+           { name: "NULL", points: 0, completed: 0, challenges: [] }
        ], 1);
    }
    
@@ -88,11 +99,33 @@ function processLeaderboard(data) {
            continue;
        }
        
+       const challengeName = data[i][0];
+       
        // Überprüfe für jeden Spieler, ob die Challenge abgeschlossen ist
        for (let j = 0; j < players.length; j++) {
            const playerCol = j + 1;
-           if (data[i] && data[i][playerCol] === 'x') {
+           // Prüfen ob überhaupt Text in der Zelle steht
+           if (data[i] && data[i][playerCol] && 
+               data[i][playerCol].toString().trim() !== '') {
+               
                players[j].completed++;
+               
+               // Challenge und Link (falls vorhanden) speichern
+               const completionValue = data[i][playerCol].toString();
+               let youtubeLink = null;
+               
+               // Prüfen ob ein YouTube-Link vorhanden ist
+               if (completionValue.includes(';')) {
+                   const potentialLink = completionValue.split(';')[1].trim();
+                   if (isValidYoutubeUrl(potentialLink)) {
+                       youtubeLink = potentialLink;
+                   }
+               }
+               
+               players[j].challenges.push({
+                   name: challengeName,
+                   youtubeLink: youtubeLink
+               });
            }
        }
    }
@@ -102,6 +135,34 @@ function processLeaderboard(data) {
    
    // Generiere HTML für das Leaderboard
    return generateLeaderboardHTML(players, totalChallenges);
+}
+
+// Generiere HTML für die Liste der abgeschlossenen Challenges
+function generateChallengesList(challenges) {
+    if (challenges.length === 0) {
+        return `<div class="no-challenges">Keine Challenges abgeschlossen</div>`;
+    }
+    
+    let html = '';
+    
+    challenges.forEach(challenge => {
+        html += `
+            <div class="challenge-item">
+                <div class="challenge-name">${challenge.name}</div>
+                ${challenge.youtubeLink ? 
+                    `<a href="${challenge.youtubeLink}" target="_blank" class="youtube-link">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" fill="currentColor"/>
+                        </svg>
+                        Video ansehen
+                    </a>` : 
+                    `<span class="no-link">No Video</span>`
+                }
+            </div>
+        `;
+    });
+    
+    return html;
 }
 
 // Generiere HTML für das Leaderboard im Challenge-Stil mit größeren Icons
@@ -137,13 +198,59 @@ function generateLeaderboardHTML(players, totalChallenges) {
                             <span class="points-badge">${player.points}</span>
                         </div>
                     </div>
+                    <div class="expand-button">
+                        <span class="expand-icon">+</span> Show Details
+                    </div>
                 </div>  
+            </div>
+            <div class="player-details" id="details-${playerId}" style="display: none;">
+                <div class="player-challenges">
+                    <h3>Completed Challenges</h3>
+                    <div class="challenges-grid">
+                        ${generateChallengesList(player.challenges)}
+                    </div>
+                </div>
             </div>
         `;
     });
     
     return html;
- }
+}
+
+// Toggle-Funktion für die Spielerdetails
+function togglePlayerDetails(playerId) {
+    const detailsElement = document.getElementById(`details-${playerId}`);
+    const playerElement = document.getElementById(playerId);
+    const expandIcon = playerElement.querySelector('.expand-icon');
+    
+    if (detailsElement.style.display === 'none') {
+        // Öffnen
+        detailsElement.style.display = 'block';
+        expandIcon.textContent = 'x';
+        
+        // Element höhe messen bevor wir animate
+        const height = detailsElement.scrollHeight;
+        detailsElement.style.maxHeight = '0px';
+        
+        // Force reflow
+        detailsElement.offsetHeight;
+        
+        // Animation starten
+        detailsElement.style.maxHeight = height + 'px';
+        
+    } else {
+        // Schließen - einfach die maxHeight setzen
+        expandIcon.textContent = '+';
+        detailsElement.style.maxHeight = '0px';
+        
+        // Warten bis Animation fertig ist
+        detailsElement.addEventListener('transitionend', function handler() {
+            detailsElement.style.display = 'none';
+            detailsElement.removeEventListener('transitionend', handler);
+        }, {once: true});
+    }
+}
+
 // XLSB-Datei laden und verarbeiten
 async function loadXLSBFile() {
    try {
@@ -221,7 +328,21 @@ async function loadGDIcons(players) {
             }
         }
     }
- }
+}
+
+// Füge die Event-Listener hinzu nach dem Laden der Seite
+function addPlayerClickEvents() {
+    document.querySelectorAll('.challenge').forEach(player => {
+        const playerId = player.id;
+        const expandButton = player.querySelector('.expand-button');
+        
+        // Nur der Expand-Button soll klickbar sein
+        expandButton.addEventListener('click', function(e) {
+            e.stopPropagation(); // Verhindert Bubbling
+            togglePlayerDetails(playerId);
+        });
+    });
+}
 
 // Hauptfunktion zum Initialisieren des Leaderboards
 async function initLeaderboard() {
@@ -285,6 +406,9 @@ async function initLeaderboard() {
        
        // GD-Icons für alle Spieler laden
        loadGDIcons(players);
+       
+       // Event-Listener für Spieler-Details hinzufügen
+       addPlayerClickEvents();
    } else {
        console.error('Element .challenge-list nicht gefunden');
    }
