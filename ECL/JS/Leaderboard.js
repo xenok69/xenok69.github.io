@@ -46,10 +46,16 @@ function getGDIconUrls(userData) {
 function isValidYoutubeUrl(url) {
     if (!url) return false;
     
-    // Regex für YouTube-URLs: youtube.com, youtu.be mit verschiedenen Formaten
-    const youtubePattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|v\/|embed\/|shorts\/)?([a-zA-Z0-9_-]{11}|[a-zA-Z0-9_-]+)/;
-    
-    return youtubePattern.test(url);
+    try {f
+        // Versuche, URL zu parsen
+        const urlObj = new URL(url);
+        // Prüfe, ob Domain youtube.com oder youtu.be ist
+        const hostname = urlObj.hostname;
+        return hostname.includes('youtube.com') || hostname === 'youtu.be';
+    } catch (e) {
+        // Ungültige URL
+        return false;
+    }
 }
 
 // Hauptfunktion zum Verarbeiten der Daten und Generieren des Leaderboards
@@ -92,42 +98,40 @@ function processLeaderboard(data) {
        totalChallenges = 1; // Standardwert
    }
    
-   // Zähle abgeschlossene Challenges für jeden Spieler
-   for (let i = 2; i < data.length; i++) {
-       // Überspringe, wenn diese Zeile keinen Challenge-Namen hat
-       if (!data[i] || !data[i][0] || data[i][0].trim() === '' || data[i][0] === 'NULL') {
-           continue;
-       }
-       
-       const challengeName = data[i][0];
-       
-       // Überprüfe für jeden Spieler, ob die Challenge abgeschlossen ist
-       for (let j = 0; j < players.length; j++) {
-           const playerCol = j + 1;
-           // Prüfen ob überhaupt Text in der Zelle steht
-           if (data[i] && data[i][playerCol] && 
-               data[i][playerCol].toString().trim() !== '') {
-               
-               players[j].completed++;
-               
-               // Challenge und Link (falls vorhanden) speichern
-               const completionValue = data[i][playerCol].toString();
-               let youtubeLink = null;
-               
-               // Prüfen ob ein YouTube-Link vorhanden ist
-               if (completionValue.includes(';')) {
-                   const potentialLink = completionValue.split(';')[1].trim();
-                   if (isValidYoutubeUrl(potentialLink)) {
-                       youtubeLink = potentialLink;
-                   }
-               }
-               
-               players[j].challenges.push({
-                   name: challengeName,
-                   youtubeLink: youtubeLink
-               });
-           }
-       }
+    // Bei Challenges auch die Namen und YouTube-Links speichern
+    for (let i = 2; i < data.length; i++) {
+        // Überspringe, wenn diese Zeile keinen Challenge-Namen hat
+        if (!data[i] || !data[i][0] || data[i][0].trim() === '' || data[i][0] === 'NULL') {
+            continue;
+        }
+        
+        const challengeName = data[i][0];
+        
+        // Überprüfe für jeden Spieler, ob die Challenge abgeschlossen ist
+        for (let j = 0; j < players.length; j++) {
+            const playerCol = j + 1;
+            if (data[i] && data[i][playerCol] && data[i][playerCol].toString().trim() !== '') {
+                players[j].completed++;
+                
+                // Challenge und Link (falls vorhanden) speichern
+                const completionValue = data[i][playerCol].toString();
+                let youtubeLink = null;
+                
+                // Prüfen ob ein YouTube-Link vorhanden ist
+                if (completionValue.includes('youtube.com') || completionValue.includes('youtu.be')) {
+                    // Extrahiere den YouTube-Link direkt
+                    const match = completionValue.match(/(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)[^\s;]*/);
+                    if (match) {
+                        youtubeLink = match[0];
+                    }
+                }
+                
+                players[j].challenges.push({
+                    name: challengeName,
+                    youtubeLink: youtubeLink
+                });
+            }
+        }
    }
    
    // Sortiere Spieler nach Punkten (absteigend)

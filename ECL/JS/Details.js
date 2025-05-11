@@ -95,8 +95,8 @@ function useFallbackData() {
     window.recordsData = [
         ["PLAYER", "MentosTeeGD", "SFApfel", "yJulien", "komqetenter", "xenok1", "peul"],
         ["POINTS", "175", "100", "131", "30", "58", "43"],
-        ["Fenchelhonig", "", "x;01.01.2025", "", "", "", ""],
-        ["Fledermaus", "x;15.01.2025", "", "", "", "", ""]
+        ["Fenchelhonig", "", "https://www.youtube.com/watch?v=dQw4w9WgXcQ;01.01.2025", "", "", "", ""],
+        ["Fledermaus", "https://www.youtube.com/watch?v=dQw4w9WgXcQ;15.01.2025", "", "", "", "", ""]
     ];
     
     displayCurrentChallenge();
@@ -109,14 +109,18 @@ function getRecordsForChallenge(challengeName) {
         return [];
     }
     
+    console.log("Suche Einträge für Challenge:", challengeName);
+    
     // Find the row index for this challenge
     const challengeRowIndex = window.recordsData.findIndex(row => 
-        row[0] && row[0].toString() === challengeName.toString());
+        row[0] && String(row[0]) === String(challengeName));
     
     if (challengeRowIndex === -1) {
         console.warn(`Challenge "${challengeName}" not found in records data`);
         return [];
     }
+    
+    console.log("Challenge gefunden bei Index:", challengeRowIndex);
     
     const challengeRow = window.recordsData[challengeRowIndex];
     const records = [];
@@ -124,72 +128,57 @@ function getRecordsForChallenge(challengeName) {
     // First row contains player names
     const playerNames = window.recordsData[0];
     
-    // Find all players who completed this challenge (marked with 'x' or entries containing date)
+    console.log("Challenge Row:", challengeRow);
+    console.log("Player Names:", playerNames);
+    
+    // Find all players who completed this challenge (ANY non-empty entry counts as completion)
     for (let i = 1; i < challengeRow.length; i++) {
-        if (challengeRow[i] && (challengeRow[i] === 'x' || challengeRow[i].toString().includes('x;'))) {
-            const playerName = playerNames[i];
+        const cellContent = challengeRow[i];
+        
+        // Debug ausgabe für jede Zelle
+        console.log(`Zelle [${i}] für Spieler ${playerNames[i]}:`, cellContent);
+        
+        // Prüfen ob die Zelle einen Wert hat (egal welchen)
+        if (cellContent !== undefined && cellContent !== null && cellContent !== "") {
+            console.log(`Spieler ${playerNames[i]} hat die Challenge abgeschlossen`);
             
-            // Extract date if available (format: "x;DD.MM.YYYY")
-            let completionDate = null;
-            if (typeof challengeRow[i] === 'string' && challengeRow[i].includes(';')) {
-                const parts = challengeRow[i].split(';');
-                if (parts.length > 1) {
+            // Initialize variables for video link and completion date
+            let videoLink = null;
+            let completionDate = "Unknown Date";
+            
+            // Convert cell content to string for processing
+            const cellStr = String(cellContent);
+            
+            if (cellStr.includes(';')) {
+                const parts = cellStr.split(';');
+                
+                // Check if first part contains "youtube" as a video link
+                if (parts[0] && (parts[0].includes('youtube') || parts[0].includes('youtu.be'))) {
+                    videoLink = parts[0].trim();
+                }
+                
+                // Second part should be the date
+                if (parts.length > 1 && parts[1].trim()) {
                     completionDate = parts[1].trim();
                 }
-            }
-            
-            // Get the player's YouTube link (if available) from the first worksheet
-            // Look for a challenge with this player as the verifier
-            let videoLink = null;
-            for (const entry of challengesData) {
-                if (entry.Verifier === playerName && entry.Video) {
-                    videoLink = entry.Video;
-                    break;
+            } else {
+                // If there's no semicolon, assume it might be a date
+                if (cellStr.match(/\d{2}\.\d{2}\.\d{4}/)) {
+                    completionDate = cellStr.trim();
                 }
             }
             
-            // If no video found as verifier, look for any challenge with this creator
-            if (!videoLink) {
-                for (const entry of challengesData) {
-                    if (entry.Creator === playerName && entry.Video) {
-                        videoLink = entry.Video;
-                        break;
-                    }
-                }
-            }
-            
-            // Add default videoLink if none found
-            if (!videoLink) {
-                videoLink = "https://youtube.com/watch?v=dQw4w9WgXcQ";
-            }
+            console.log(`Eintrag für ${playerNames[i]}: Video=${videoLink}, Datum=${completionDate}`);
             
             records.push({
-                player: playerName,
+                player: playerNames[i],
                 videoLink: videoLink,
-                date: completionDate || "Unknown Date"
+                date: completionDate
             });
         }
     }
     
-    // Sort records by date (newest first)
-    records.sort((a, b) => {
-        // If both dates are available, compare them
-        if (a.date !== "Unknown Date" && b.date !== "Unknown Date") {
-            // Parse dates (format: DD.MM.YYYY)
-            const dateA = parseGermanDate(a.date);
-            const dateB = parseGermanDate(b.date);
-            
-            // Sort in descending order (newest first)
-            return dateB - dateA;
-        }
-        
-        // If one date is missing, put it at the end
-        if (a.date === "Unknown Date") return 1;
-        if (b.date === "Unknown Date") return -1;
-        
-        // If all else fails, keep original order
-        return 0;
-    });
+    console.log(`Insgesamt ${records.length} Einträge gefunden für ${challengeName}`);
     
     return records;
 }
@@ -220,11 +209,14 @@ function displayCurrentChallenge() {
     
     // Get real records for this challenge
     let challengeRecords = getRecordsForChallenge(challenge.Challenge);
+    console.log("Records found before filtering:", challengeRecords);
     
     // Remove the verifier from the records list to avoid duplication
     const verifier = challenge.Verifier;
     if (verifier) {
+        console.log("Filtering out verifier:", verifier);
         challengeRecords = challengeRecords.filter(record => record.player !== verifier);
+        console.log("Records after filtering:", challengeRecords);
     }
     
     // Extract data from challenge
@@ -354,19 +346,28 @@ function renderRecordsSection(challengeData) {
         return;
     }
     
+    console.log("Rendering records section with data:", challengeData.records);
+    
     // Create HTML for records rows
     let recordRows = '';
     challengeData.records.forEach(record => {
+        // Check if there's a valid YouTube link
+        const hasValidYoutubeLink = record.videoLink && 
+            (record.videoLink.includes('youtube') || record.videoLink.includes('youtu.be'));
+            
         recordRows += `
             <div class="record-row">
                 <div class="record-cell">${record.player}</div>
                 <div class="record-cell">
-                    <a href="${record.videoLink}" target="_blank" class="video-link">
-                        YouTube
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                            <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                        </svg>
-                    </a>
+                    ${hasValidYoutubeLink ? 
+                        `<a href="${record.videoLink}" target="_blank" class="video-link">
+                            YouTube
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                        </a>` 
+                        : ''
+                    }
                     <span class="record-date">${record.date !== "Unknown Date" ? record.date : ""}</span>
                 </div>
             </div>
