@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Yann Schocher - Kontakt aufnehmen">
+    <title>Yann Schocher - Kontakt</title>
+
+    <link rel="stylesheet" href="CSS/Kontakt.css">
+</head>
+<body>
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    <header>
+        <nav>
+            <div class="logo">Yann Schocher</div>
+            <label for="menu-toggle" class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <ul class="nav-links">
+                <li><a href="https://xenok69.github.io/Portfolio/UeberMich.html">Über mich</a></li>
+                <li><a href="https://xenok69.github.io/Portfolio/Faehigkeiten.html">Fähigkeiten</a></li>
+                <li><a href="https://xenok69.github.io/Portfolio/Portfolio.html">Portfolio</a></li>
+                <li><a href="https://xenok69.github.io/Portfolio/Kontakt.html" class="active">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <h1 class="page-title">Kontakt</h1>
+        <p class="page-subtitle">Ich freue mich auf Ihre Nachricht!</p>
+        
+        <div class="contact-container">
+            <section class="contact-info">
+                <h2 class="section-title">Kontakt Daten</h2>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div class="contact-details">
+                        <div class="contact-label">Telefon</div>
+                        <div class="contact-value">00423 788 20 98</div>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <div class="contact-details">
+                        <div class="contact-label">Private E-Mail</div>
+                        <div class="contact-value">y.schocher@brainmedia.com</div>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">💼</div>
+                    <div class="contact-details">
+                        <div class="contact-label">Schul E-Mail</div>
+                        <div class="contact-value">Yann.Schocher@edu.gbssg.ch</div>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <div class="contact-details">
+                        <div class="contact-label">E-Mail</div>
+                        <div class="contact-value">yann.schocher@vpbank.com</div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="contact-form">
+                <h2 class="section-title">Kontakt Formular</h2>
+                
+                <form id="contactForm" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="name">Vollständiger Name *</label>
+                        <input type="text" id="name" name="name" required placeholder="Max Mustermann">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-Mail Adresse *</label>
+                        <input type="email" id="email" name="email" required placeholder="max@beispiel.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Telefonnummer</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+41 79 123 45 67">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Nachricht *</label>
+                        <textarea id="message" name="message" required placeholder="Ihre Nachricht..."></textarea>
+                    </div>
+                    
+                    <button type="button" class="submit-button">Absenden</button>
+                </form>
+            </section>
+        </div>
+    </main>
+    
+    <!-- Kontaktformular ist rein visuell - keine Funktionalität -->
+</body>
+</html>
