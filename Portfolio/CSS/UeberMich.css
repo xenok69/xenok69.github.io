@@ -318,8 +318,8 @@ main {
      position: fixed;
      bottom: 20px;
      left: 20px;
-     width: 1920px;
-     height: 1080px;
+     width: 900px;
+     height: 400px;
      z-index: 999;
      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
      border-radius: 8px;
@@ -331,7 +331,7 @@ main {
      height: 100%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
      .corner-video {
           width: 200px;
           height: 113px;
