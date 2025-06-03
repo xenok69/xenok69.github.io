@@ -139,6 +139,56 @@ main {
      line-height: 1.8;
 }
 
+/* Social Links Styles */
+.social-links {
+     display: flex;
+     justify-content: center;
+     gap: 1rem;
+     margin-top: 1.5rem;
+}
+
+.social-links a {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 45px;
+     height: 45px;
+     background-color: #2d3561;
+     border-radius: 50%;
+     color: #a8b2d1;
+     text-decoration: none;
+     transition: all 0.3s ease;
+     font-size: 1.2rem;
+}
+
+.social-links a:hover {
+     background-color: #5B8BF5;
+     color: #ffffff;
+     transform: translateY(-3px);
+     box-shadow: 0 5px 15px rgba(91, 139, 245, 0.4);
+}
+
+/* Spezifische Hover-Farben für jede Plattform */
+.social-links a:hover.youtube-hover,
+.social-links a[href*="youtube"]:hover {
+     background-color: #FF0000;
+}
+
+.social-links a:hover.twitch-hover,
+.social-links a[href*="twitch"]:hover {
+     background-color: #9146FF;
+}
+
+.social-links a:hover.github-hover,
+.social-links a[href*="github"]:hover {
+     background-color: #171515;
+}
+
+.social-links a:hover.discord-hover,
+.social-links a[href*="discord"]:hover {
+     background-color: #5865F2;
+}
+
 .content-section {
      background-color: #1a1f3a;
      border-radius: 12px;
@@ -249,5 +299,16 @@ main {
      
      .hobbies-grid {
           grid-template-columns: repeat(2, 1fr);
+     }
+     
+     /* Social Links Mobile Anpassung */
+     .social-links {
+          gap: 0.8rem;
+     }
+     
+     .social-links a {
+          width: 40px;
+          height: 40px;
+          font-size: 1.1rem;
      }
 }
