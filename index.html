@@ -1,216 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Index</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio — Yann Schocher</title>
 
-     <style>
-          body {
-               background-color: #000000;
-               color: rgba(255, 255, 255, .9);
-               font-family: Arial, Helvetica, sans-serif;
-               margin: 0;
-               padding: 0;
-               overflow: hidden;
-          }
-
-          canvas {
-               position: fixed;
-               top: 0;
-               left: 0;
-               width: 100vw;
-               height: 100vh;
-               z-index: -1;
-               pointer-events: none;
-          }
-
-          .content {
-               position: 0;
-
-               margin: 0;
-               padding: 0;
-
-               width: 100svw;
-               height: 100svh;
-
-               background-color: rgba(0, 0, 0, 0);
-          }
-
-          .bg-render {
-               background: rgba(0, 0, 0, 0.05);
-          }
-
-          .element-box {
-               background-color: rgba(0, 0, 0, 0);
-          }
-     </style>
+  <link rel="stylesheet" href="index-style.css" />
+  <meta name="description" content="Simple, clean template to describe yourself: about, skills, projects, experience, and contact." />
 </head>
-<body>
-     <div class="content">
-          <div class="element-box bg-render">
-               <h1>This is my website</h1>
-               <p>Yes, this is my website, you've heard it right</p>
+<body id="top">
+  <!-- Background canvas (your existing effect) -->
+  <canvas id="bg" aria-hidden="true"></canvas>
+
+  <!-- ====== Header / Nav ====== -->
+  <header class="site-header">
+    <nav class="nav">
+      <a class="logo" href="#top" aria-label="Home">YS</a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ====== Main ====== -->
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero element-box bg-render">
+      <h1 class="title"><span data-edit="name">Yann Schocher</span></h1>
+      <p class="tagline" data-edit="tagline">Informatiker / Applikationsentwickler</p>
+      <div class="cta-row">
+        <a class="btn" href="#projects">View Projects</a>
+        <a class="btn btn-secondary" href="#contact">Contact Me</a>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section element-box bg-render">
+      <h2>About</h2>
+      <p>
+          Ich bin ein Leidenschaftlicher Informatiker mit einem Fokus auf Applikationsentwicklung.
+          Mit Erfahrung in verschiedenen Programmiersprachen und Technologien, strebe ich danach,
+          innovative Lösungen zu entwickeln, die echten Mehrwert bieten.
+          Meine Projekte reichen von Webanwendungen bis hin zu komplexen Backend-Systemen,
+          und ich liebe es, Herausforderungen kreativ zu lösen.
+      </p>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="section element-box bg-render">
+      <h2>Skills</h2>
+      <ul class="chips" aria-label="Skills">
+          <li>Lua</li>
+          <li>C</li>
+          <li>Python</li>
+          <li>Powershell</li>
+          <li>Bash</li>
+          <li>HTML</li>
+          <li>CSS</li>
+      </ul>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="section element-box bg-render">
+      <h2>Projects</h2>
+      <div class="cards">
+        <article class="card">
+          <header>
+            <h3>Eclipse Challenge List</h3>
+            <p class="meta">Eine Challenge-Website, die für 'Geometry Dash' erstellt wurde</p>
+          </header>
+          <p>Eine Liste von Herausforderungen, die Sie im Spiel 'Geometry Dash' abschliessen können. Erstellt mit JS</p>
+          <div class="card-ctas">
+            <a class="btn btn-small" href="https://xenok69.github.io/ECL/MainList.html" target="_blank" rel="noopener">Live</a>
+            <a class="btn btn-small btn-secondary" href="https://github.com/xenok69/xenok69.github.io/tree/main/ECL" target="_blank" rel="noopener">Code</a>
           </div>
-     </div>
-     
-     <canvas id="bg"></canvas>
-     <script>
-          const canvas = document.getElementById("bg");
-          const ctx = canvas.getContext("2d");
+        </article>
 
-          // Offscreen buffer for flicker-free rendering
-          const bufferCanvas = document.createElement("canvas");
-          const bufferCtx = bufferCanvas.getContext("2d");
+        <article class="card">
+          <header>
+            <h3>Portfolio</h3>
+            <p class="meta">Meine erste Webseite, welche mich beschreibt.</p>
+          </header>
+          <p>Eine kurze Beschreibung meiner Fähigkeiten und Projekte.</p>
+          <div class="card-ctas">
+            <a class="btn btn-small" href="https://xenok69.github.io/Portfolio/Portfolio.html" target="_blank" rel="noopener">Live</a>
+            <a class="btn btn-small btn-secondary" href="https://github.com/xenok69/xenok69.github.io/tree/main/Portfolio" target="_blank" rel="noopener">Code</a>
+          </div>
+        </article>
+      </div>
+    </section>
 
-          let w = canvas.width = bufferCanvas.width = window.innerWidth;
-          let h = canvas.height = bufferCanvas.height = window.innerHeight;
+    <!-- Experience -->
+    <section id="experience" class="section element-box bg-render">
+      <h2>Experience</h2>
+      <ul class="timeline">
+        <li class="timeline-item">
+          <div class="item-head">
+            <span class="role">Informatiker / Applikationsentwickler</span>
+            <span class="company">VP Bank AG</span>
+            <span class="dates">2024 — Present</span>
+          </div>
+          <ul class="bullets">
+            <li>Zertifikat einlesungen wurden von mir Umgeschrieben</li>
+            <li>Neue Features für die interne Software entwickelt</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
 
-          // Blue → Blurple → Purple
-          const colors = ["#3B82F6", "#5865F2", "#9333EA"];
-          let circles = [];
-          const MAX_CIRCLES = 5; 
+    <!-- Contact -->
+    <section id="contact" class="section element-box bg-render">
+      <h2>Contact</h2>
+      <ul class="links">
+        <li><a href="mailto:y.schocher@brainnote.com">E-Mail</a></li>
+        <li><a href="https://github.com/xenok69" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://www.discord.gg/Fy7MH5pSnF" target="_blank" rel="noopener">Discord</a></li>
+      </ul>
+    </section>
+  </main>
 
-          function spawnCircle() {
-               if (circles.length >= MAX_CIRCLES) return;
+  <footer class="site-footer">
+    <p>© <span id="year"></span> <span data-edit="name-footer">Yann Schocher</span> · Built with HTML / CSS + Javascript + My brain.</p>
+  </footer>
 
-               // Medium to large sizes (no extra-large)
-               const radiusOptions = [
-                    w / 8,   // medium
-                    w / 6,   // medium-large
-                    w / 5    // large
-               ];
-               let radius = radiusOptions[Math.floor(Math.random() * radiusOptions.length)];
-               let speed = Math.random() * 1 + 0.3; // varied speed
+  <script>
+    // Auto-update year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 
-               let x, y;
-               let valid = false;
-               let attempts = 0;
-
-               while (!valid && attempts < 50) {
-                    x = Math.random() * w;
-                    y = Math.random() * h;
-                    valid = true;
-
-                    for (let c of circles) {
-                         let dx = x - c.x;
-                         let dy = y - c.y;
-                         let dist = Math.sqrt(dx * dx + dy * dy);
-                         // Keep ~20% overlap at most
-                         if (dist < (radius + c.r) * 0.9) {
-                              valid = false;
-                              break;
-                         }
-                    }
-                    attempts++;
-               }
-
-               circles.push({
-                    x,
-                    y,
-                    r: radius,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    dx: (Math.random() - 0.5) * speed,
-                    dy: (Math.random() - 0.5) * speed,
-                    alpha: 0,
-                    spawnTime: Date.now()
-               });
-          }
-
-          // Initial spawn
-          spawnCircle();
-          // Spawn every 2 seconds
-          setInterval(spawnCircle, 2000);
-
-          function separateCircles() {
-               for (let i = 0; i < circles.length; i++) {
-                    for (let j = i + 1; j < circles.length; j++) {
-                         let c1 = circles[i];
-                         let c2 = circles[j];
-                         let dx = c2.x - c1.x;
-                         let dy = c2.y - c1.y;
-                         let dist = Math.sqrt(dx * dx + dy * dy);
-                         let minDist = (c1.r + c2.r) * 0.9; // ~10% overlap allowed
-
-                         if (dist < minDist && dist > 0) {
-                              let overlap = (minDist - dist) / 2;
-                              let angle = Math.atan2(dy, dx);
-                              c1.x -= Math.cos(angle) * overlap;
-                              c1.y -= Math.sin(angle) * overlap;
-                              c2.x += Math.cos(angle) * overlap;
-                              c2.y += Math.sin(angle) * overlap;
-                         }
-                    }
-               }
-          }
-
-          function drawCirclesToBuffer() {
-               bufferCtx.clearRect(0, 0, w, h);
-               const now = Date.now();
-
-               separateCircles();
-
-               circles.forEach((c, index) => {
-                    let age = (now - c.spawnTime) / 1000;
-                    if (age < 1) {
-                         c.alpha = age;
-                    } else if (age < 9) {
-                         c.alpha = 1;
-                    } else if (age < 10) {
-                         c.alpha = 1 - (age - 9);
-                    } else {
-                         circles.splice(index, 1);
-                         return;
-                    }
-
-                    // Move
-                    c.x += c.dx;
-                    c.y += c.dy;
-                    if (c.x - c.r < 0 || c.x + c.r > w) c.dx *= -1;
-                    if (c.y - c.r < 0 || c.y + c.r > h) c.dy *= -1;
-
-                    // Draw blurred circle
-                    bufferCtx.beginPath();
-                    bufferCtx.fillStyle = c.color;
-                    bufferCtx.globalAlpha = c.alpha * 0.4; // softer
-                    bufferCtx.filter = "blur(80px)"; // more blur
-                    bufferCtx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
-                    bufferCtx.fill();
-                    bufferCtx.filter = "none";
-               });
-
-               bufferCtx.globalAlpha = 1;
-          }
-
-          function drawToMainCanvas() {
-               ctx.clearRect(0, 0, w, h);
-
-               // Draw from buffer
-               ctx.drawImage(bufferCanvas, 0, 0);
-
-               // Mask with bg-render divs
-               ctx.globalCompositeOperation = "destination-in";
-               ctx.beginPath();
-               document.querySelectorAll(".bg-render").forEach(el => {
-                    let rect = el.getBoundingClientRect();
-                    ctx.rect(rect.left, rect.top, rect.width, rect.height);
-               });
-               ctx.fill();
-               ctx.globalCompositeOperation = "source-over";
-          }
-
-          function loop() {
-               drawCirclesToBuffer();
-               drawToMainCanvas();
-               requestAnimationFrame(loop);
-          }
-
-          loop();
-
-          window.addEventListener("resize", () => {
-               w = canvas.width = bufferCanvas.width = window.innerWidth;
-               h = canvas.height = bufferCanvas.height = window.innerHeight;
-          });
-     </script>
+  <div id="circle-container"></div>
+  <script src="index-code.js"></script>
 </body>
 </html>
